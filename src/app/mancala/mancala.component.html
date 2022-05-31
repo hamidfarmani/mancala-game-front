@@ -1,0 +1,102 @@
+<div class="container">
+  <h1>Create Game</h1>
+  <form
+    #creationForm="ngForm"
+    (ngSubmit)="createGame(creationForm.value)"
+    class="form-inline"
+  >
+    <div class="row">
+      <div class="form-group mx-sm-3 mb-2 col-md-6">
+        <label for="firstPlayerName" class="sr-only">First player</label>
+        <input
+          type="text"
+          ngModel
+          name="firstPlayerName"
+          id="firstPlayerName"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group mx-sm-3 mb-2 col-md-6">
+        <label for="secondPlayerName" class="sr-only">Second player</label>
+        <input
+          type="text"
+          ngModel
+          name="secondPlayerName"
+          id="secondPlayerName"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group col-md-3">
+        <button type="submit" class="btn btn-primary mb-2">Create</button>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="this.mancalaBoard" class="row mt-5">
+    <div class="col-md-8 offset-md-2">
+      <h2>
+        <div *ngIf="this.mancalaBoard.statusEnum === 'PLAYER1_WON'">
+          Congrats {{ mancalaBoard.firstPlayerName }}. You won!
+        </div>
+        <div *ngIf="this.mancalaBoard.statusEnum === 'PLAYER2_WON'">
+          Congrats {{ mancalaBoard.secondPlayerName }}. You won!
+        </div>
+        <div *ngIf="this.mancalaBoard.statusEnum === 'TIE'">Tie</div>
+      </h2>
+      <h4 *ngIf="this.mancalaBoard.statusEnum === 'ONGOING'">
+        <div *ngIf="this.mancalaBoard.playerTurn === 1">
+          {{ mancalaBoard.firstPlayerName }}'s turn
+        </div>
+        <div *ngIf="this.mancalaBoard.playerTurn === 2">
+          {{ mancalaBoard.secondPlayerName }}'s turn
+        </div>
+      </h4>
+      <div style="color: red" *ngIf="this.error">
+        {{ error }}
+      </div>
+      <div class="table-responsive">
+        <table class="mx-auto w-auto">
+          <td></td>
+          <tr>
+            <td></td>
+            <td *ngFor="let number of [5, 4, 3, 2, 1, 0]">
+              <button
+                (click)="sow(number)"
+                style="height: 20px; width: 30px"
+              ></button>
+              <div style="display: flex; justify-content: center">
+                {{ mancalaBoard.pits[number] }}
+              </div>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              {{ mancalaBoard.firstPlayerName }}
+              {{ mancalaBoard.pits[6] }}
+            </td>
+            <td colspan="6"></td>
+            <td>
+              {{ mancalaBoard.secondPlayerName }}
+              {{ mancalaBoard.pits[13] }}
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td *ngFor="let number of [7, 8, 9, 10, 11, 12]">
+              <div style="display: flex; justify-content: center">
+                {{ mancalaBoard.pits[number] }}
+              </div>
+              <button
+                (click)="sow(number)"
+                style="height: 20px; width: 30px"
+              ></button>
+            </td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
